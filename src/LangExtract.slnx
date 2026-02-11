@@ -1,0 +1,12 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="LangExtract.Agents/LangExtract.Agents.csproj" />
+  <Project Path="LangExtract.Core/LangExtract.Core.csproj" />
+  <Project Path="LangExtract.Logic/LangExtract.Logic.csproj" />
+  <Project Path="LangExtract.Providers/LangExtract.Providers.csproj" />
+  <Project Path="LangExtract.TestApp/LangExtract.TestApp.csproj" />
+</Solution>
