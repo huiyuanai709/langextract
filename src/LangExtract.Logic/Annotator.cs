@@ -3,6 +3,7 @@ using LangExtract.Core;
 using LangExtract.Core.Schema;
 using LangExtract.Logic.Chunking;
 using LangExtract.Logic.Prompting;
+using LangExtract.Logic.Resolvers;
 using LangExtract.Logic.Tokenizers;
 
 namespace LangExtract.Logic

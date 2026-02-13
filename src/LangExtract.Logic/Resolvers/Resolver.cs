@@ -1,8 +1,8 @@
 using LangExtract.Core;
-using LangExtract.Logic.Tokenizers;
 using LangExtract.Core.Exceptions;
+using LangExtract.Logic.Tokenizers;
 
-namespace LangExtract.Logic;
+namespace LangExtract.Logic.Resolvers;
 
 public class Resolver
 {
@@ -101,73 +101,5 @@ public class Resolver
     {
         var aligner = new WordAligner();
         return aligner.AlignExtractions(extractions, sourceText, tokenOffset, charOffset, tokenizer);
-    }
-}
-
-public class WordAligner
-{
-    public IEnumerable<Extraction> AlignExtractions(
-        IEnumerable<Extraction> extractions,
-        string sourceText,
-        int tokenOffset,
-        int charOffset,
-        ITokenizer? tokenizer = null)
-    {
-        tokenizer ??= new RegexTokenizer(); 
-        var tokenizedSource = tokenizer.Tokenize(sourceText);
-        var sourceTokens = tokenizedSource.Tokens;
-        var sourceTokenStrings = sourceTokens.Select(t => ExtractTokenString(sourceText, t)).ToList();
-        var sourceTokenStringsLower = sourceTokenStrings.Select(s => s.ToLowerInvariant()).ToList();
-
-        var alignedExtractions = new List<Extraction>();
-
-        foreach (var extraction in extractions)
-        {
-            var extractionTokText = tokenizer.Tokenize(extraction.ExtractionText);
-            var extTokenStrings = extractionTokText.Tokens.Select(t => ExtractTokenString(extraction.ExtractionText, t).ToLowerInvariant()).ToList();
-
-            if (extTokenStrings.Count == 0) continue;
-
-            var startIdx = FindSubSequence(sourceTokenStringsLower, extTokenStrings);
-
-            if (startIdx != -1)
-            {
-                var endIdx = startIdx + extTokenStrings.Count; 
-                    
-                var startToken = sourceTokens[startIdx];
-                var endToken = sourceTokens[endIdx - 1]; 
-
-                extraction.TokenInterval = new TokenInterval(startIdx + tokenOffset, endIdx + tokenOffset);
-                extraction.CharInterval = new CharInterval(
-                    (startToken.CharInterval.StartPos ?? 0) + charOffset,
-                    (endToken.CharInterval.EndPos ?? 0) + charOffset
-                );
-                extraction.AlignmentStatus = AlignmentStatus.MatchExact;
-            }
-                
-            alignedExtractions.Add(extraction);
-        }
-
-        return alignedExtractions;
-    }
-
-    private string ExtractTokenString(string text, Token token)
-    {
-        var start = token.CharInterval.StartPos ?? 0;
-        var end = token.CharInterval.EndPos ?? 0;
-        if (start >= text.Length) return "";
-        if (end > text.Length) end = text.Length;
-        return text.Substring(start, end - start);
-    }
-
-    private int FindSubSequence(List<string> source, List<string> target)
-    {
-        // Simple naive search
-        for (var i = 0; i <= source.Count - target.Count; i++)
-        {
-            var match = !target.Where((t, j) => source[i + j] != t).Any();
-            if (match) return i;
-        }
-        return -1;
     }
 }
