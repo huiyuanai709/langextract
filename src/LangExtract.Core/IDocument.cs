@@ -1,25 +1,22 @@
-using System;
+namespace LangExtract.Core;
 
-namespace LangExtract.Core
+/// <summary>
+/// Document interface for annotating documents.
+/// </summary>
+public interface IDocument
 {
     /// <summary>
-    /// Document interface for annotating documents.
+    /// Raw text representation for the document.
     /// </summary>
-    public interface IDocument
-    {
-        /// <summary>
-        /// Raw text representation for the document.
-        /// </summary>
-        string Text { get; }
+    string Text { get; }
 
-        /// <summary>
-        /// Unique identifier for each document.
-        /// </summary>
-        string DocumentId { get; }
+    /// <summary>
+    /// Unique identifier for each document.
+    /// </summary>
+    string DocumentId { get; }
 
-        /// <summary>
-        /// Additional context to supplement prompt instructions.
-        /// </summary>
-        string? AdditionalContext { get; }
-    }
+    /// <summary>
+    /// Additional context to supplement prompt instructions.
+    /// </summary>
+    string? AdditionalContext { get; }
 }

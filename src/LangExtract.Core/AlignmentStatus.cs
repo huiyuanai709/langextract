@@ -1,10 +1,9 @@
-namespace LangExtract.Core
+namespace LangExtract.Core;
+
+public enum AlignmentStatus
 {
-    public enum AlignmentStatus
-    {
-        MatchExact,
-        MatchGreater,
-        MatchLesser,
-        MatchFuzzy
-    }
+    MatchExact,
+    MatchGreater,
+    MatchLesser,
+    MatchFuzzy
 }

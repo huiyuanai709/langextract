@@ -1,30 +1,25 @@
-using System;
-using System.Net.Http;
-using System.Threading.Tasks;
+namespace LangExtract.Logic.IO;
 
-namespace LangExtract.Logic.IO
+public class UrlDownloader
 {
-    public class UrlDownloader
+    private readonly HttpClient _httpClient;
+
+    public UrlDownloader(HttpClient? httpClient = null)
     {
-        private readonly HttpClient _httpClient;
+        _httpClient = httpClient ?? new HttpClient();
+    }
 
-        public UrlDownloader(HttpClient? httpClient = null)
+    public async Task<string> DownloadTextFromUrlAsync(string url)
+    {
+        try
         {
-            _httpClient = httpClient ?? new HttpClient();
+            var response = await _httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsStringAsync();
         }
-
-        public async Task<string> DownloadTextFromUrlAsync(string url)
+        catch (Exception ex)
         {
-            try
-            {
-                var response = await _httpClient.GetAsync(url);
-                response.EnsureSuccessStatusCode();
-                return await response.Content.ReadAsStringAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Failed to download from {url}: {ex.Message}", ex);
-            }
+            throw new Exception($"Failed to download from {url}: {ex.Message}", ex);
         }
     }
 }

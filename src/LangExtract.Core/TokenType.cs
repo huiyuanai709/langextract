@@ -1,9 +1,8 @@
-namespace LangExtract.Core
+namespace LangExtract.Core;
+
+public enum TokenType
 {
-    public enum TokenType
-    {
-        Word = 0,
-        Number = 1,
-        Punctuation = 2
-    }
+    Word = 0,
+    Number = 1,
+    Punctuation = 2
 }

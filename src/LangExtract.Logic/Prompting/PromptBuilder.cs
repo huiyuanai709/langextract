@@ -1,17 +1,16 @@
-namespace LangExtract.Logic.Prompting
+namespace LangExtract.Logic.Prompting;
+
+public class PromptBuilder
 {
-    public class PromptBuilder
+    protected readonly QaPromptGenerator _generator;
+
+    public PromptBuilder(QaPromptGenerator generator)
     {
-        protected readonly QAPromptGenerator _generator;
+        _generator = generator;
+    }
 
-        public PromptBuilder(QAPromptGenerator generator)
-        {
-            _generator = generator;
-        }
-
-        public virtual string BuildPrompt(string chunkText, string documentId, string? additionalContext = null)
-        {
-            return _generator.Render(chunkText, additionalContext);
-        }
+    public virtual string BuildPrompt(string chunkText, string documentId, string? additionalContext = null)
+    {
+        return _generator.Render(chunkText, additionalContext);
     }
 }

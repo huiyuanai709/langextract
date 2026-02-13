@@ -1,32 +1,27 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Agents;
-using Microsoft.SemanticKernel.ChatCompletion;
 
-namespace LangExtract.Agents
+namespace LangExtract.Agents;
+
+/// <summary>
+/// An Agent specialized in extraction using LangExtract logic.
+/// It wraps a ChatCompletionAgent configured with the ExtractionPlugin.
+/// </summary>
+public class ExtractionAgent
 {
-    /// <summary>
-    /// An Agent specialized in extraction using LangExtract logic.
-    /// It wraps a ChatCompletionAgent configured with the ExtractionPlugin.
-    /// </summary>
-    public class ExtractionAgent
+    public ChatCompletionAgent Agent { get; }
+
+    public ExtractionAgent(string name, Kernel kernel, Logic.LangExtractClient client)
     {
-        public ChatCompletionAgent Agent { get; }
+        // Register the plugin in the kernel (or agent's kernel)
+        kernel.Plugins.AddFromObject(new ExtractionPlugin(client), "Extraction");
 
-        public ExtractionAgent(string name, Kernel kernel, LangExtract.Logic.LangExtractClient client)
+        // Create the agent
+        Agent = new ChatCompletionAgent
         {
-            // Register the plugin in the kernel (or agent's kernel)
-            kernel.Plugins.AddFromObject(new ExtractionPlugin(client), "Extraction");
-
-            // Create the agent
-            Agent = new ChatCompletionAgent
-            {
-                Name = name,
-                Instructions = "You are an extraction specialist. Use the ExtractionPlugin to extract information from text.",
-                Kernel = kernel
-            };
-        }
+            Name = name,
+            Instructions = "You are an extraction specialist. Use the ExtractionPlugin to extract information from text.",
+            Kernel = kernel
+        };
     }
 }

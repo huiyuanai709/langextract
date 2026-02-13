@@ -1,7 +1,6 @@
-namespace LangExtract.Core
+namespace LangExtract.Core;
+
+public interface ITokenizer
 {
-    public interface ITokenizer
-    {
-        TokenizedText Tokenize(string text);
-    }
+    TokenizedText Tokenize(string text);
 }

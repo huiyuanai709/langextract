@@ -1,36 +1,32 @@
-using System;
-using System.Collections.Generic;
+namespace LangExtract.Core;
 
-namespace LangExtract.Core
+/// <summary>
+/// Class for representing annotated documents.
+/// </summary>
+public class AnnotatedDocument
 {
-    /// <summary>
-    /// Class for representing annotated documents.
-    /// </summary>
-    public class AnnotatedDocument
+    private string? _documentId;
+
+    public List<Extraction>? Extractions { get; set; }
+    public string? Text { get; set; }
+
+    public AnnotatedDocument(string? text = null, string? documentId = null, List<Extraction>? extractions = null)
     {
-        private string? _documentId;
+        Text = text;
+        _documentId = documentId;
+        Extractions = extractions;
+    }
 
-        public List<Extraction>? Extractions { get; set; }
-        public string? Text { get; set; }
-
-        public AnnotatedDocument(string? text = null, string? documentId = null, List<Extraction>? extractions = null)
+    public string DocumentId
+    {
+        get
         {
-            Text = text;
-            _documentId = documentId;
-            Extractions = extractions;
-        }
-
-        public string DocumentId
-        {
-            get
+            if (_documentId == null)
             {
-                if (_documentId == null)
-                {
-                    _documentId = $"doc_{Guid.NewGuid().ToString("N").Substring(0, 8)}";
-                }
-                return _documentId;
+                _documentId = $"doc_{Guid.NewGuid().ToString("N").Substring(0, 8)}";
             }
-            set => _documentId = value;
+            return _documentId;
         }
+        set => _documentId = value;
     }
 }

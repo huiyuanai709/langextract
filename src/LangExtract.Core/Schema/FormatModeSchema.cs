@@ -1,30 +1,27 @@
-using System.Collections.Generic;
+namespace LangExtract.Core.Schema;
 
-namespace LangExtract.Core.Schema
+public enum FormatMode
 {
-    public enum FormatMode
+    Json,
+    Yaml
+}
+
+public class FormatModeSchema : BaseSchema
+{
+    public FormatMode Format { get; set; }
+
+    public FormatModeSchema(FormatMode format = FormatMode.Json)
     {
-        Json,
-        Yaml
+        Format = format;
     }
 
-    public class FormatModeSchema : BaseSchema
+    public override bool RequiresRawOutput => Format == FormatMode.Json;
+
+    public override Dictionary<string, object> ToProviderConfig()
     {
-        public FormatMode Format { get; set; }
-
-        public FormatModeSchema(FormatMode format = FormatMode.Json)
+        return new Dictionary<string, object>
         {
-            Format = format;
-        }
-
-        public override bool RequiresRawOutput => Format == FormatMode.Json;
-
-        public override Dictionary<string, object> ToProviderConfig()
-        {
-            return new Dictionary<string, object>
-            {
-                { "format", Format == FormatMode.Json ? "json" : "yaml" }
-            };
-        }
+            { "format", Format == FormatMode.Json ? "json" : "yaml" }
+        };
     }
 }

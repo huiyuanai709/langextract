@@ -10,7 +10,7 @@ namespace LangExtract.Logic
     public class Annotator
     {
         private readonly BaseLanguageModel _languageModel;
-        private readonly QAPromptGenerator _promptGenerator;
+        private readonly QaPromptGenerator _promptGenerator;
         private readonly FormatHandler _formatHandler;
 
         public Annotator(
@@ -20,7 +20,7 @@ namespace LangExtract.Logic
         {
             _languageModel = languageModel;
             _formatHandler = new FormatHandler(formatType: formatType);
-            _promptGenerator = new QAPromptGenerator(promptTemplate, _formatHandler);
+            _promptGenerator = new QaPromptGenerator(promptTemplate, _formatHandler);
         }
 
         public async Task<AnnotatedDocument> AnnotateTextAsync(
