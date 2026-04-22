@@ -34,4 +34,11 @@ public class OpenAIProvider : BaseLanguageModel
         var response = await _chatClient.GetResponseAsync(prompt, cancellationToken: cancellationToken);
         return [response.Text];
     }
+
+    public async Task<string> InferAsync(IList<ChatMessage> messages, ChatOptions? options = null,
+        CancellationToken cancellationToken = default)
+    {
+        var response = await _chatClient.GetResponseAsync(messages, options, cancellationToken);
+        return response.Text;
+    }
 }

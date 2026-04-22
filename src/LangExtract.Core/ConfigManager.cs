@@ -16,6 +16,10 @@ public class ConfigManager
         public string? ApiKey { get; set; }
         public string? ApiEndpoint { get; set; }
         public string Model { get; set; } = "gpt-4o";
+
+        public string? BaseUrl { get; set; }
+        public string VisionModel { get; set; } = "qwen3-vl-plus";
+        public string LlmModel { get; set; } = "qwen-plus";
     }
 
     public static Config LoadConfig()
@@ -39,6 +43,13 @@ public class ConfigManager
             Console.Error.WriteLine($"Warning: Failed to load config.ini: {ex.Message}");
         }
 
+        // Backward-compat: older configs used ApiEndpoint/Model only.
+        config.BaseUrl ??= config.ApiEndpoint;
+        if (string.IsNullOrWhiteSpace(config.LlmModel))
+            config.LlmModel = config.Model;
+        if (string.IsNullOrWhiteSpace(config.VisionModel))
+            config.VisionModel = "gpt-4o-mini";
+
         return config;
     }
 
@@ -56,6 +67,9 @@ public class ConfigManager
             sb.AppendLine($"ApiKey = {config.ApiKey}");
             sb.AppendLine($"ApiEndpoint = {config.ApiEndpoint}");
             sb.AppendLine($"Model = {config.Model}");
+            sb.AppendLine($"BaseUrl = {config.BaseUrl}");
+            sb.AppendLine($"VisionModel = {config.VisionModel}");
+            sb.AppendLine($"LlmModel = {config.LlmModel}");
             sb.AppendLine();
 
             File.WriteAllText(ConfigPath, sb.ToString(), Encoding.UTF8);
@@ -76,6 +90,9 @@ public class ConfigManager
             $"  ApiKey:            {(string.IsNullOrEmpty(config.ApiKey) ? "(not set)" : config.ApiKey)}");
         Console.WriteLine($"  ApiEndpoint:       {config.ApiEndpoint ?? "(not set)"}");
         Console.WriteLine($"  Model:             {config.Model}");
+        Console.WriteLine($"  BaseUrl:           {config.BaseUrl ?? "(not set)"}");
+        Console.WriteLine($"  VisionModel:       {config.VisionModel}");
+        Console.WriteLine($"  LlmModel:          {config.LlmModel}");
         Console.WriteLine(new string('-', 60));
     }
 }

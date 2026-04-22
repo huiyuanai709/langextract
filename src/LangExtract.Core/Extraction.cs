@@ -1,8 +1,11 @@
+using System.Diagnostics;
+
 namespace LangExtract.Core;
 
 /// <summary>
 /// Represents an extraction extracted from text.
 /// </summary>
+[DebuggerDisplay("{ExtractionClass}: {ExtractionText}")]
 public class Extraction
 {
     public string ExtractionClass { get; set; }
